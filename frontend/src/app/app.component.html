@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABM de Clientes</title>
+    <link rel="stylesheet" href="app.component.css"> 
+</head>
+<body>
+  <header>
+    <h1>Gestión de Clientes</h1>
+  </header>
+  
+  <main>
+    <section class="formulario">
+      <h2>Administrar Clientes</h2>
+      
+      <button id="accion-cliente">Agregar / Cambiar</button>
+  
+      <form #clienteForm="ngForm" (ngSubmit)="onSubmit(clienteForm)">
+        <div id="customer-id-container">
+          <label for="customer-id"><b>CustomerID:</b></label>
+          <input type="text" id="customer-id" name="ClienteID" ngModel>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre"><b>CustomerName:</b></label>
+            <input type="text" id="nombre" name="NombreCompleto" required ngModel>
+          </div>
+  
+          <div class="form-group">
+            <label for="email"><b>Email:</b></label>
+            <input type="email" id="email" name="Email" required ngModel>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="number"><b>Number:</b></label>
+            <input type="tel" id="number" name="Numero" required ngModel>
+          </div>
+  
+          <div class="form-group">
+            <label for="city"><b>City:</b></label>
+            <input type="text" id="city" name="Ciudad" required ngModel>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address"><b>Address:</b></label>
+            <input type="text" id="address" name="Direccion" required ngModel>
+          </div>
+  
+          <div class="form-group">
+            <label for="postalcode"><b>PostalCode:</b></label>
+            <input type="number" id="postalcode" name="CodigoPostal" required ngModel>
+          </div>
+        </div>
+  
+        <button type="submit">Guardar Cliente</button>
+      </form>
+
+
+
+
+
+    </section>
+  </main>
+  
+  <section class="lista-clientes">
+    <h2>Lista de Clientes</h2>
+    <input type="text" id="buscar-cliente" placeholder="Buscar cliente..." (input)="filtrarClientes($event)">
+  
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Completo</th>
+          <th>Email</th>
+          <th>N° Telefono</th>
+          <th>Ciudad </th>
+          <th>Direccion</th>
+          <th>Codigo Postal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of clientesFiltrados">
+          <td>{{ cliente.ClienteID }}</td>
+          <td>{{ cliente.NombreCompleto }}</td>
+          <td>{{ cliente.Email }}</td>
+          <td>{{ cliente.Numero }}</td>
+          <td>{{ cliente.Ciudad }}</td>
+          <td>{{ cliente.Direccion }}</td>
+          <td>{{ cliente.CodigoPostal }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  
+</body>
+</html>
