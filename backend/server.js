@@ -34,7 +34,8 @@ app.get('/Clientes', (req, res) => {
 // Ruta para agregar un cliente
 app.post('/Clientes', (req, res) => {
     const { NombreCompleto, Email, Numero, Ciudad, Direccion, CodigoPostal } = req.body;
-    
+    const { ClienteID } = req.params;
+
     if (!NombreCompleto || !Email || !Numero || !Ciudad || !Direccion || !CodigoPostal) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
@@ -60,14 +61,36 @@ app.put('/Clientes/:ClienteID', (req, res) => {
     const sql = `UPDATE Clientes SET NombreCompleto = ?, Email = ?, Numero = ?, Ciudad = ?, Direccion = ?, CodigoPostal = ? WHERE ClienteID = ?`;
     const params = [NombreCompleto, Email, Numero, Ciudad, Direccion, CodigoPostal, ClienteID];
 
-    db.run(sql, params, function (err) {
+    db.run(sql, params, function(err) {
         if (err) {
             res.status(500).json({ error: err.message });
-            return;
+        } else {
+            // Retornamos el objeto actualizado; convierte ClienteID a número si es necesario
+            res.json({
+                ClienteID: Number(ClienteID),
+                NombreCompleto,
+                Email,
+                Numero,
+                Ciudad,
+                Direccion,
+                CodigoPostal
+            });
         }
-        res.json({ message: 'Cliente actualizado correctamente' });
     });
 });
+
+app.delete('/api/clientes/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = clientes.findIndex(c => c.CustomerID === id);
+    
+    if (index !== -1) {
+        clientes.splice(index, 1);
+        res.status(200).send({ message: 'Cliente eliminado' });
+    } else {
+        res.status(404).send({ message: 'Cliente no encontrado' });
+    }
+});
+
 
 // Iniciar el servidor
 app.listen(PORT, () => {

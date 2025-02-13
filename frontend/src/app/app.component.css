@@ -118,3 +118,29 @@ th {
     margin-bottom: 15px;
 }
 
+.modo-agregar {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+.modo-editar {
+    background-color: #007bff; /* Azul */
+    color: white;
+}
+.campo-deshabilitado {
+    background-color: #e9ecef; /* Gris */
+    cursor: not-allowed;
+}
+
+.btn-eliminar {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-eliminar:hover {
+    background-color: #c82333;
+}

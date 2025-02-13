@@ -15,57 +15,59 @@
     <section class="formulario">
       <h2>Administrar Clientes</h2>
       
-      <button id="accion-cliente">Agregar / Cambiar</button>
+      <button id="accion-cliente"
+    [ngClass]="{ 'modo-agregar': !modoEdicion, 'modo-editar': modoEdicion }"
+    (click)="alternarModo()">
+    {{ modoEdicion ? 'Modo Editar' : 'Modo Agregar' }}
+    </button> 
   
-      <form #clienteForm="ngForm" (ngSubmit)="onSubmit(clienteForm)">
-        <div id="customer-id-container">
-          <label for="customer-id"><b>CustomerID:</b></label>
-          <input type="text" id="customer-id" name="ClienteID" ngModel>
+    <form #clienteForm="ngForm" (ngSubmit)="onSubmit(clienteForm)" autocomplete="off">
+      <div id="customer-id-container">
+        <label for="customer-id"><b>ClienteID:</b></label>
+        <input type="text" id="customer-id" name="ClienteID" ngModel [disabled]="!modoEdicion" 
+               [ngClass]="{ 'campo-deshabilitado': !modoEdicion }" required 
+               #inputID (input)="buscarCliente(inputID.value ? +inputID.value : 0)">
+      </div>
+    
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre"><b>Nombre Completo:</b></label>
+          <input type="text" id="nombre" name="CustomerName" required [(ngModel)]="formData.NombreCompleto" autocomplete="name">
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nombre"><b>CustomerName:</b></label>
-            <input type="text" id="nombre" name="NombreCompleto" required ngModel>
-          </div>
-  
-          <div class="form-group">
-            <label for="email"><b>Email:</b></label>
-            <input type="email" id="email" name="Email" required ngModel>
-          </div>
+    
+        <div class="form-group">
+          <label for="email"><b>Email:</b></label>
+          <input type="email" id="email" name="Email" required [(ngModel)]="formData.Email" autocomplete="email">
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="number"><b>Number:</b></label>
-            <input type="tel" id="number" name="Numero" required ngModel>
-          </div>
-  
-          <div class="form-group">
-            <label for="city"><b>City:</b></label>
-            <input type="text" id="city" name="Ciudad" required ngModel>
-          </div>
+      </div>
+    
+      <div class="form-row">
+        <div class="form-group">
+          <label for="number"><b>Numero:</b></label>
+          <input type="tel" id="number" name="Number" required [(ngModel)]="formData.Numero" autocomplete="tel">
         </div>
-  
-        <div class="form-row">
-          <div class="form-group">
-            <label for="address"><b>Address:</b></label>
-            <input type="text" id="address" name="Direccion" required ngModel>
-          </div>
-  
-          <div class="form-group">
-            <label for="postalcode"><b>PostalCode:</b></label>
-            <input type="number" id="postalcode" name="CodigoPostal" required ngModel>
-          </div>
+    
+        <div class="form-group">
+          <label for="city"><b>Ciudad:</b></label>
+          <input type="text" id="city" name="City" required [(ngModel)]="formData.Ciudad" autocomplete="address-level2">
         </div>
-  
-        <button type="submit">Guardar Cliente</button>
-      </form>
-
-
-
-
-
+      </div>
+    
+      <div class="form-row">
+        <div class="form-group">
+          <label for="address"><b>Direccion:</b></label>
+          <input type="text" id="address" name="Address" required [(ngModel)]="formData.Direccion" autocomplete="street-address">
+        </div>
+    
+        <div class="form-group">
+          <label for="postalcode"><b>Codigo Postal:</b></label>
+          <input type="number" id="postalcode" name="PostalCode" required [(ngModel)]="formData.CodigoPostal" autocomplete="postal-code">
+        </div>
+      </div>
+    
+      <button type="submit">Guardar Cliente</button>
+      <button type="button" *ngIf="modoEdicion" (click)="eliminarCliente()">Eliminar Cliente</button>
+    </form>
     </section>
   </main>
   
@@ -79,10 +81,10 @@
           <th>ID</th>
           <th>Nombre Completo</th>
           <th>Email</th>
-          <th>N° Telefono</th>
-          <th>Ciudad </th>
-          <th>Direccion</th>
-          <th>Codigo Postal</th>
+          <th>Número</th>
+          <th>Ciudad</th>
+          <th>Dirección</th>
+          <th>Código Postal</th>
         </tr>
       </thead>
       <tbody>
@@ -98,6 +100,5 @@
       </tbody>
     </table>
   </section>
-  
 </body>
 </html>
