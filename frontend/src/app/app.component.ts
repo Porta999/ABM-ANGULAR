@@ -17,7 +17,10 @@ export class AppComponent implements OnInit {
   clientes: any[] = [];
   clientesFiltrados: any[] = [];
   modoEdicion: boolean = false; 
-  clienteSeleccionado: any = null; 
+  clienteSeleccionado: any = null;
+  showDeleteModal = false;
+  showConfirmModal = false;
+  idToDelete: string = '';
 
   @ViewChild('inputID', { static: false }) inputIDRef!: ElementRef;
 
@@ -80,18 +83,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  eliminarCliente() {
-    if (this.clienteSeleccionado) {
-      this.clientesService.deleteCliente(this.clienteSeleccionado.ClienteID).subscribe(() => {
-        this.clientes = this.clientes.filter(c => c.ClienteID !== this.clienteSeleccionado.ClienteID);
-        this.clienteSeleccionado = null;
-        this.modoEdicion = false;
-        this.clientesFiltrados = [...this.clientes];
-        this.cdRef.detectChanges();
-      });
-    }
-  }
-  
+
   cargarClientes() {
     this.clientesService.getClientes().subscribe(
       (data) => {
@@ -163,5 +155,53 @@ export class AppComponent implements OnInit {
       cliente.Ciudad?.toLowerCase().includes(filtro)
     );
     this.cdRef.detectChanges();
+  }
+  openDeleteModal() {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.idToDelete = '';
+  }
+
+  // 3. Función que cierra el primer pop-up y abre la confirmación
+  askConfirmDelete() {
+    if (!this.idToDelete.trim()) {
+      alert('Por favor, ingresa un ID válido.');
+      return;
+    }
+    this.showDeleteModal = false;
+    this.showConfirmModal = true;
+  }
+
+  closeConfirmModal() {
+    this.showConfirmModal = false;
+    this.idToDelete = '';
+  }
+
+  // 4. Función final que elimina el cliente
+  confirmDelete() {
+    const idNum = parseInt(this.idToDelete, 10);
+    console.log('Eliminando ID:', idNum); // Verifica qué se está enviando
+    if (isNaN(idNum)) {
+      alert('El ID ingresado no es válido.');
+      return;
+    }
+
+    this.clientesService.deleteCliente(idNum).subscribe(
+      () => {
+        // Quita el cliente del array
+        this.clientes = this.clientes.filter(c => c.ClienteID !== idNum);
+        this.clientesFiltrados = [...this.clientes];
+        alert(`Cliente con ID ${idNum} eliminado correctamente.`);
+        this.showConfirmModal = false;
+        this.idToDelete = '';
+      },
+      (error) => {
+        console.error('Error al eliminar cliente:', error);
+        alert('No se pudo eliminar el cliente. Revisa la consola para más detalles.');
+      }
+    );
   }
 }

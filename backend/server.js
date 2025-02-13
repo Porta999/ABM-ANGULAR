@@ -80,17 +80,23 @@ app.put('/Clientes/:ClienteID', (req, res) => {
 });
 
 app.delete('/api/clientes/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const index = clientes.findIndex(c => c.CustomerID === id);
+    const id = parseInt(req.params.id, 10);
     
-    if (index !== -1) {
-        clientes.splice(index, 1);
-        res.status(200).send({ message: 'Cliente eliminado' });
-    } else {
-        res.status(404).send({ message: 'Cliente no encontrado' });
-    }
-});
-
+    // Supongamos que tu tabla se llama "Clientes" y la columna es "ClienteID"
+    const sql = 'DELETE FROM Clientes WHERE ClienteID = ?';
+    
+    db.run(sql, [id], function (err) {
+      if (err) {
+        console.error('Error al eliminar cliente en la BD:', err);
+        return res.status(500).json({ error: err.message });
+      }
+      // 'this.changes' indica cuántos registros se borraron
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Cliente no encontrado' });
+      }
+      res.json({ message: 'Cliente eliminado correctamente' });
+    });
+  });
 
 // Iniciar el servidor
 app.listen(PORT, () => {

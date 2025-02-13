@@ -15,12 +15,17 @@
     <section class="formulario">
       <h2>Administrar Clientes</h2>
       
-      <button id="accion-cliente"
-    [ngClass]="{ 'modo-agregar': !modoEdicion, 'modo-editar': modoEdicion }"
-    (click)="alternarModo()">
-    {{ modoEdicion ? 'Modo Editar' : 'Modo Agregar' }}
-    </button> 
-  
+
+      <div class=" acciones-botones"> 
+        <button id="accion-cliente" 
+        [ngClass]="{ 'modo-agregar': !modoEdicion, 'modo-editar': modoEdicion }"
+        (click)="alternarModo()">
+        {{ modoEdicion ? 'Modo Editar' : 'Modo Agregar' }}
+        </button> 
+      
+        <button class="btn-eliminar" type="button"  (click)="openDeleteModal()">Eliminar Cliente</button>
+      </div>
+
     <form #clienteForm="ngForm" (ngSubmit)="onSubmit(clienteForm)" autocomplete="off">
       <div id="customer-id-container">
         <label for="customer-id"><b>ClienteID:</b></label>
@@ -66,9 +71,35 @@
       </div>
     
       <button type="submit">Guardar Cliente</button>
-      <button type="button" *ngIf="modoEdicion" (click)="eliminarCliente()">Eliminar Cliente</button>
     </form>
     </section>
+
+    <div class="modal-overlay" *ngIf="showDeleteModal">
+      <div class="modal-content">
+        <h2>Eliminar Cliente</h2>
+        <label  for="idToDelete">Ingrese el ID del cliente a eliminar:</label>
+        <input type="text" [(ngModel)]="idToDelete" id="idToDelete" />
+    
+        <div class="modal-buttons">
+          <button (click)="askConfirmDelete()">Eliminar</button>
+          <button (click)="closeDeleteModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Segundo pop-up: Confirmación -->
+    <div class="modal-overlay" *ngIf="showConfirmModal">
+      <div class="modal-content">
+        <h2>Confirmar eliminación</h2>
+        <p>¿Estás seguro de eliminar al cliente con ID {{ idToDelete }}?</p>
+    
+        <div class="modal-buttons">
+          <button (click)="confirmDelete()">Sí, eliminar</button>
+          <button (click)="closeConfirmModal()">No, cancelar</button>
+        </div>
+      </div>
+    </div>
+
   </main>
   
   <section class="lista-clientes">

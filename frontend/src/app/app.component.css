@@ -49,7 +49,7 @@ button:hover {
 
 #accion-cliente {
     display: block;
-    margin: 0 auto 15px;
+    /* margin: 0 auto 15px; */
 }
 
 form {
@@ -114,8 +114,7 @@ th {
     gap: 10px;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 15px;
+    margin-bottom: 50px;
 }
 
 .modo-agregar {
@@ -138,9 +137,77 @@ th {
     padding: 10px;
     border: none;
     cursor: pointer;
-    margin-top: 10px;
+    
 }
 
 .btn-eliminar:hover {
     background-color: #c82333;
+}
+
+.acciones-botones {
+    display: flex;           /* Los pone en línea */
+    align-items: center;     /* Centra verticalmente */
+    justify-content: space-between;
+    gap: 1rem; /* Uno a la izquierda, otro a la derecha */
+    margin-bottom: 1rem;     /* Espacio debajo, opcional */
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Sombra oscura */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Para que quede sobre todo lo demás */
+}
+
+  /* Contenedor del pop-up */
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 400px; /* Ajusta a tu gusto */
+    width: 90%;       /* Ajusta a tu gusto */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    text-align: center; /* Centrar textos y botones */
+}
+
+  /* Botones dentro del pop-up */
+.modal-buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.modal-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+  /* Ejemplo de estilo para el botón principal */
+.modal-buttons button:first-child {
+    background-color: #dc3545; /* Rojo */
+    color: #fff;
+    border-radius: 5px;
+}
+.modal-buttons button:first-child:hover {
+    background-color: #c82333;
+}
+
+  /* Botón secundario */
+.modal-buttons button:last-child {
+    background-color: #6c757d; /* Gris */
+    color: #fff;
+    border-radius: 5px;
+}
+.modal-buttons button:last-child:hover {
+    background-color: #5a6268;
+}
+
+#idToDelete{
+    margin-top: 9px;
 }
